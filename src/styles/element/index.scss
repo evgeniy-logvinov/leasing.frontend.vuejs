@@ -1,0 +1,27 @@
+$secondary-color: #95c4c2;
+
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #8f7acf,),
+    'success': (
+      'base': #95c4c2,
+    ),
+    // 'warning': (
+    //   'base': #ff7b6f,
+    // ),
+    // 'danger': (
+    //   'base': #db2828,
+    // ),
+    // 'error': (
+    //   'base': #db2828,
+    // ),
+    // 'info': (
+    //   'base': #42b8dd,
+    // ),
+  ),
+  // $button-padding-horizontal: (
+  //   'default': 80px,
+  // )
+);
+// $base-color: #545c64;
