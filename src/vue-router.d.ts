@@ -9,7 +9,7 @@ declare module 'vue-router' {
   interface RouteMeta {
     // is optional
     // must be declared by every route
-    registration?: boolean
+    // registration?: boolean
     requiresAuth?: boolean
   }
 }
