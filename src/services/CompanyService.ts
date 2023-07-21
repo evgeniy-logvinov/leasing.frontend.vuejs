@@ -1,5 +1,5 @@
-import { apiClient } from '@/http'
-import type { Companies } from '../interfaces/Companies'
+import { apiClient } from '~/http'
+import type { Companies } from '~/interfaces/Companies'
 
 export default {
   getCompanies() {

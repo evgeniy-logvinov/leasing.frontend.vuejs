@@ -1,3 +1,1 @@
-<template>
-    Company Profile
-</template>
+<template>Company Profile</template>

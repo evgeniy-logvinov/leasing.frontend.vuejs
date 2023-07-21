@@ -5,7 +5,10 @@
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
   ],
   "paths": {
     "~/*": ["src/*"],
@@ -13,9 +16,13 @@
   },
   "compilerOptions": {
     "baseUrl": ".",
-    "composite": true,
+    "composite": false,
     "module": "ESNext",
     "types": ["node"],
     "moduleResolution":"node",
+    "paths": {
+      "~/*": ["src/*"],
+      "@/*": ["./src/*"]
+    }
   }
 }

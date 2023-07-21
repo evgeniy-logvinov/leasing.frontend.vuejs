@@ -1,3 +1,1 @@
-<template>
-    Commercial Proposal
-</template>
+<template>Commercial Proposal</template>

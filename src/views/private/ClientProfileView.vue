@@ -1,3 +1,1 @@
-<template>
-    Client profile
-</template>
+<template>Client profile</template>

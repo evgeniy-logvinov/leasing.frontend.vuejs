@@ -1,3 +1,1 @@
-<template>
-    Forbidden
-</template>
+<template>Forbidden</template>

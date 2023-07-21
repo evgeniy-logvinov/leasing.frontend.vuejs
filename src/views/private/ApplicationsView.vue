@@ -1,3 +1,1 @@
-<template>
-    Applications
-</template>
+<template>Applications</template>

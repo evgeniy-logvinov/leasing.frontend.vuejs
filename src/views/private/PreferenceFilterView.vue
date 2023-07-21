@@ -1,3 +1,1 @@
-<template>
-    Preference Filter
-</template>
+<template>Preference Filter</template>

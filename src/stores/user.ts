@@ -1,125 +1,70 @@
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-// import { computed } from 'vue'
-import UsersService from '../services/UsersService'
-// import type { UserInfoData } from '../interfaces/UserInfoData'
-
-interface UserInfo {
-  loggedIn: boolean
-  data: {
-    displayName: string | null
-    email: string | null
-    // userInfo?: UserInfoData | null
-  }
-}
+import UsersService from '~/services/UsersService'
+import type { UserLogIn } from '~/interfaces/UserLogIn'
+import type { UserSignUp } from '~/interfaces/UserSignUp'
+import { UserInfo } from '~/interfaces/UserInfo'
 
 export const useUserStore = defineStore('user', () => {
-  // const emptyData = {
-  //   email: '',
-  //   displayName: '',
-  //   userInfo: null
-  // }
-
-  const user: UserInfo = reactive({
-    loggedIn: false,
-    data: {
-      email: '',
-      displayName: '',
-      userInfo: null
-    }
+  const accessToken = ref('')
+  const user = ref<UserInfo>({
+    email: '',
+    confirmed: false,
+    permissions: [],
+    role: null
   })
 
-  async function signUp({
-    email,
-    password,
-    confirmPassword,
-  }: {
-    email: string
-    password: string,
-    confirmPassword: string
-  }) {
-    const response = await UsersService.sighUp({email, password, confirmPassword})
-    console.log('response', response)
-    // if (response) {
-    //   user.data = {
-    //     displayName: response.user.displayName,
-    //     email: response.user.email
-    //   } // TODO: check
-    //   // response.updateProfile({ displayName: name })
-    //   await sendEmailVerification(response.user)
-    // } else {
-    //   throw new Error('Unable to signup user')
-    // }
+  async function signUp(user: UserSignUp) {
+    // TODO: remove token when signup
+    await UsersService.sighUp(user)
   }
 
-  async function  confirmEmail(id:string) {
+  async function confirmEmail(id: string) {
     await UsersService.confirmEmail(id)
   }
 
-  // async function logIn({
-  //   email,
-  //   password
-  // }: {
-  //   email: string
-  //   password: string
-  // }) {
-  //   const response = await signInWithEmailAndPassword(auth, email, password)
-  //   if (response) {
-  //     user.data = {
-  //       displayName: response.user.displayName,
-  //       email: response.user.email
-  //     }
-  //   } else {
-  //     throw new Error('SignIn failed')
-  //   }
-  // }
+  async function sendConfirmEmail(email: string | null) {
+    const confirmEmail = email || user.value.email || ''
+    await UsersService.sendConfirmEmail(confirmEmail)
+  }
 
-  // async function logOut() {
-  //   await signOut(auth)
-  //   user.data = { ...emptyData }
-  // }
+  async function resetRequired(email: string) {
+    await UsersService.resetRequired(email)
+  }
 
-  // async function fetchUser(userInfo: User | null) {
-  //   user.loggedIn = userInfo !== null
-  //   if (userInfo) {
-  //     user.data = {
-  //       displayName: userInfo.displayName,
-  //       email: userInfo.email
-  //     }
-  //   } else {
-  //     user.data = { ...emptyData }
-  //   }
-  // }
+  async function resetPassword(resetPasswordInfo: {
+    id: string
+    password: string
+    confirmPassword: string
+  }) {
+    await UsersService.resetPassword(resetPasswordInfo)
+  }
 
-  // const fetchUserInfo = async () => {
-  //   if (user.loggedIn) {
-  //     const { data: userInfo } = await UsersService.getUserInfo()
-  //     user.data.userInfo = userInfo
-  //   }
-  // }
+  async function logIn(userLogIn: UserLogIn) {
+    const { data } = await UsersService.logIn(userLogIn)
+    console.log('response', data)
+    if (data) {
+      accessToken.value = data.accessToken
+      user.value = data.user
+    } else {
+      throw new Error('Login failed')
+    }
+  }
 
-  // const isLoggedIn = computed(() => !!user.loggedIn)
-  // const userName = computed(
-  //   () => user.data && (user.data.email || user.data.displayName)
-  // )
-  // const userEmail = computed(() => user.data?.email)
-  // const userInfo = computed(() => user.data?.userInfo)
-  // const planMiliseconds = computed(
-  //   () => Number(user.data?.userInfo?.PlanMinutes) * 60000
-  // )
+  async function logOut() {
+    accessToken.value = ''
+    user.value = { email: '', confirmed: false, permissions: [], role: null }
+  }
 
   return {
     user,
-    // userEmail,
-    // userName,
-    // userInfo,
-    // fetchUserInfo,
-    // signIn,
-    // logOut,
-    // fetchUser,
+    accessToken,
+    logIn,
+    logOut,
     signUp,
     confirmEmail,
-    // isLoggedIn,
-    // planMiliseconds
+    sendConfirmEmail,
+    resetRequired,
+    resetPassword
   }
 })

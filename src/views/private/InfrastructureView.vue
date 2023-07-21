@@ -1,3 +1,1 @@
-<template>
-    Infrastructure
-</template>
+<template>Infrastructure</template>

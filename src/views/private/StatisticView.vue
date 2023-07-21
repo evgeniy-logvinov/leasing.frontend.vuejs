@@ -1,3 +1,1 @@
-<template>
-    Statistic
-</template>
+<template>Statistic</template>
