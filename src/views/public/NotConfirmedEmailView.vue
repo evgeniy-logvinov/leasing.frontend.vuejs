@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { showError } from '../../utils/handler'
 import router from '../../router'
 import { useUserStore } from '../../stores/user'
+import { getErrorMessage } from '../../utils/handler'
+import { getLoading } from '../../utils/loading'
 
 const send = ref(false)
 const {
@@ -9,9 +12,16 @@ const {
   sendConfirmEmail
 } = useUserStore()
 const sendEmail = async () => {
-  console.log(email)
-  await sendConfirmEmail(email)
-  send.value = true
+  const loading = getLoading()
+  try {
+    console.log(email)
+    await sendConfirmEmail(email)
+    send.value = true
+  } catch (err) {
+    showError(getErrorMessage(err))
+  } finally {
+    loading.close()
+  }
 }
 
 const toLogin = () => {

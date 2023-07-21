@@ -51,10 +51,12 @@ const router = createRouter({
           props: true
         },
         {
-          path: '/reset-password/:id',
+          path: '/reset-password/:resetId',
           name: 'ResetPassword',
           component: () => import('~/views/public/ResetPasswordView.vue'),
-          props: true
+          props: (route) => ({
+            resetId: route.params.resetId as string
+          })
         },
         {
           path: '/confirm-email/:id',

@@ -1,13 +1,34 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useUserStore } from '../../stores/user'
 import router from '../../router'
 import type { FormRules } from 'element-plus'
-import { isAxiosError } from 'axios'
+import { emailRules, passwordRules } from '../../utils/rules'
+import { getErrorMessage } from '../../utils/handler'
+import { getLoading } from '../../utils/loading'
 
 const error = ref<string | null>(null)
 const verify = ref<boolean>(false)
 const agree = ref<boolean>(false)
+const formValidity = ref<{
+  email: boolean
+  password: boolean
+  confirmPassword: boolean
+}>({
+  email: false,
+  password: false,
+  confirmPassword: false
+})
+
+const formValid = computed(() => {
+  return (
+    formValidity.value.email && formValidity.value.password && formValidity.value.confirmPassword
+  )
+})
+const validateForm = (propName: string, isValid: boolean) => {
+  ;(formValidity.value as any)[propName] = isValid
+}
+
 const form: {
   email: string
   password: string
@@ -19,36 +40,19 @@ const form: {
 })
 
 const onSignUp = async () => {
+  const loading = getLoading()
   try {
     const { signUp } = useUserStore()
     await signUp({ ...form })
     verify.value = true
   } catch (err) {
-    if (isAxiosError(err) && err.response && err.response.data.message) {
-      error.value = err.response.data.message
-    } else {
-      error.value = (err as Error).message
-    }
+    error.value = getErrorMessage(err)
+  } finally {
+    loading.close()
   }
 }
 
-const validatePass = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input the password'))
-  } else {
-    callback()
-  }
-}
-
-const validateEmail = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input email address'))
-  } else {
-    callback()
-  }
-}
-
-const validateConfirmPass = (rule: any, value: any, callback: any) => {
+const validateConfirmPassword = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
   } else if (value !== form.password) {
@@ -57,18 +61,10 @@ const validateConfirmPass = (rule: any, value: any, callback: any) => {
     callback()
   }
 }
-
 const rules = reactive<FormRules>({
-  email: [
-    { validator: validateEmail, trigger: 'blur' },
-    {
-      type: 'email',
-      message: 'Please input correct email address',
-      trigger: ['blur']
-    }
-  ],
-  password: [{ validator: validatePass, trigger: 'blur' }],
-  confirmPassword: [{ validator: validateConfirmPass, trigger: 'blur' }]
+  email: emailRules,
+  password: passwordRules,
+  confirmPassword: [{ validator: validateConfirmPassword, trigger: 'blur' }]
 })
 
 const goToSignIn = () => {
@@ -85,6 +81,7 @@ const goToSignIn = () => {
         :rules="rules"
         label-width="120px"
         label-position="top"
+        @validate="validateForm"
         @submit.prevent
       >
         <el-form-item prop="email" label="E-mail">
@@ -106,13 +103,9 @@ const goToSignIn = () => {
             <div class="truncate">
               <span class="align-middle">I agree to the</span>
 
-              <el-link underline href="https://fluenta.ai/offer" target="_blank"
-                >Terms and Conditions</el-link
-              >
+              <el-link underline href="link" target="_blank">Terms and Conditions</el-link>
               <span class="align-middle">and</span>
-              <el-link underline href="https://fluenta.ai/privacy" target="_blank"
-                >Privacy Policy</el-link
-              >
+              <el-link underline href="link" target="_blank">Privacy Policy</el-link>
             </div>
           </el-checkbox>
         </el-form-item>
@@ -122,7 +115,9 @@ const goToSignIn = () => {
         <el-form-item>
           <el-button
             type="primary"
-            :disabled="!agree || !form.email || !form.password || !form.confirmPassword"
+            :disabled="
+              !agree || !form.email || !form.password || !form.confirmPassword || !formValid
+            "
             class="w-full"
             round
             size="large"

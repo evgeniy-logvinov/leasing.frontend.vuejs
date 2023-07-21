@@ -5,8 +5,8 @@ import router from '../../router'
 
 import { getLoading } from '../../utils/loading'
 import { type FormRules } from 'element-plus'
-// TODO: verification case when email send but not confirmed
-// send email again
+import { emailRules, passwordRules } from '../../utils/rules'
+import { getErrorMessage } from '../../utils/handler'
 const error = ref<string | null>(null)
 const showVerify = ref<boolean>(false)
 const { logIn } = useUserStore()
@@ -26,40 +26,16 @@ const onLogIn = async () => {
     router.push({
       name: 'Home'
     })
-    console.log('done')
   } catch (err) {
-    error.value = (err as Error).message
+    error.value = getErrorMessage(err)
   } finally {
     loading.close()
   }
 }
 
-const validatePass = (_rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input the password'))
-  } else {
-    callback()
-  }
-}
-
-const validateEmail = (_rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input email address'))
-  } else {
-    callback()
-  }
-}
-
 const rules = reactive<FormRules>({
-  email: [
-    { validator: validateEmail, trigger: 'blur' },
-    {
-      type: 'email',
-      message: 'Please input correct email address',
-      trigger: ['blur']
-    }
-  ],
-  password: [{ validator: validatePass, trigger: 'blur' }]
+  email: emailRules,
+  password: passwordRules
 })
 
 const goToSignUp = () => {
@@ -67,25 +43,6 @@ const goToSignUp = () => {
     name: 'SignUp'
   })
 }
-
-// const openVerifyInfo = () => {
-//   ElNotification({
-//     title: 'Info',
-//     message: 'Email send again. please check your mailbox',
-//     type: 'info'
-//   })
-// }
-
-// const sendEmail = async () => {
-//   const loading = getLoading()
-//   try {
-//     await sendEmailVerification(auth.currentUser)
-//   } catch (err) {
-//     error.value = formatError((err as Error).message)
-//   } finally {
-//     loading.close()
-//   }
-// }
 
 const forgotPassword = () => {
   router.push({ name: 'ForgotPassword' })
@@ -126,52 +83,9 @@ const forgotPassword = () => {
       </el-form></el-col
     ></el-row
   >
-  <!-- <template v-else>
-    <el-row class="content text-center justify-center items-center mt-12">
-      <el-col class="text-center mt-8">
-        <div>Please verify your email and refresh the page</div>
-      </el-col>
-    </el-row>
-    <el-row class="text-center justify-center items-center mt-4"
-      ><el-col
-        ><el-button type="primary" size="large" round @click="sendEmail"
-          >Send email again</el-button
-        >
-      </el-col></el-row
-    >
-    <el-row class="text-center justify-center items-center mt-4"
-      ><el-col
-        ><el-button round size="large" @click="loginAgain"
-          >Change email and relogin</el-button
-        ></el-col
-      ></el-row
-    >
-  </template> -->
 </template>
 
 <style scoped lang="scss">
-// .content:after {
-//   content: '';
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   z-index: -1;
-//   -webkit-overflow-scrolling: touch;
-//   background-image: url('https://static.tildacdn.com/tild3330-3161-4465-b264-396461383031/shutterstock_2131199.jpg');
-//   background-repeat: no-repeat;
-//   background-position: center;
-//   -webkit-background-size: cover;
-//   background-size: cover;
-//   min-height: 100%;
-//   height: 100vh;
-//   background-attachment: initial;
-//   -webkit-transform: translate3d(0, 0, 0);
-//   transform: translate3d(0, 0, 0);
-//   transition: all 0.2s linear;
-// }
-
 :deep(.el-form-item__content) {
   justify-content: end;
 }

@@ -2,25 +2,24 @@
 import { isAxiosError } from 'axios'
 import { ref } from 'vue'
 import { useUserStore } from '../../stores/user'
+import { getErrorMessage } from '../../utils/handler'
+import { getLoading } from '../../utils/loading'
 
 const email = ref('')
 const send = ref(false)
 const error = ref('')
 const { resetRequired } = useUserStore()
 const reset = async () => {
+  const loading = getLoading()
   try {
     await resetRequired(email.value)
     send.value = true
   } catch (err) {
-    if (isAxiosError(err) && err.response && err.response.data.message) {
-      error.value = err.response.data.message
-    } else {
-      error.value = (err as Error).message
-    }
+    error.value = getErrorMessage(err)
+  } finally {
+    loading.close()
   }
 }
-// TODO: email validation
-// General error handler
 </script>
 <template>
   <el-row>

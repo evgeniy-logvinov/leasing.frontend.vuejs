@@ -1,53 +1,50 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { reactive } from 'vue'
 import { useUserStore } from '../../stores/user'
 import router from '../../router'
 import type { FormRules } from 'element-plus'
-import { isAxiosError } from 'axios'
+import { passwordRules } from '../../utils/rules'
+import { getErrorMessage } from '../../utils/handler'
+import { getLoading } from '../../utils/loading'
 
 const { params } = useRoute()
-
 const id = ref<string>('')
+const formValidity = ref<{
+  password: boolean
+  confirmPassword: boolean
+}>({
+  password: false,
+  confirmPassword: false
+})
+
 onMounted(() => {
-  form.id = params.id as string
+  id.value = params.resetId as string
 })
 
 const error = ref<string | null>(null)
 const form: {
-  id: string
   password: string
   confirmPassword: string
 } = reactive({
-  id: '',
   password: '',
   confirmPassword: ''
 })
-
 const onReset = async () => {
+  const loading = getLoading()
   try {
     const { resetPassword } = useUserStore()
-    await resetPassword({ ...form })
+    await resetPassword({ ...form, id: id.value })
     goToLogIn()
   } catch (err) {
-    if (isAxiosError(err) && err.response && err.response.data.message) {
-      error.value = err.response.data.message
-    } else {
-      error.value = (err as Error).message
-    }
+    error.value = getErrorMessage(err)
+  } finally {
+    loading.close()
   }
 }
 
-const validatePass = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input the password'))
-  } else {
-    callback()
-  }
-}
-
-const validateConfirmPass = (rule: any, value: any, callback: any) => {
+const validateConfirmPassword = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
   } else if (value !== form.password) {
@@ -58,27 +55,31 @@ const validateConfirmPass = (rule: any, value: any, callback: any) => {
 }
 
 const rules = reactive<FormRules>({
-  password: [{ validator: validatePass, trigger: 'blur' }],
-  confirmPassword: [{ validator: validateConfirmPass, trigger: 'blur' }]
+  password: passwordRules,
+  confirmPassword: [{ validator: validateConfirmPassword, trigger: 'blur' }]
 })
+
+const formValid = computed(() => {
+  return formValidity.value.password && formValidity.value.confirmPassword
+})
+const validateForm = (propName: string, isValid: boolean) => {
+  ;(formValidity.value as any)[propName] = isValid
+}
 
 const goToLogIn = () => {
   router.push({ name: 'LogIn' })
 }
 </script>
 <template>
-  <el-row>
-    <el-col> Reset Password </el-col>
-    <el-col>{{ id }} </el-col>
-  </el-row>
-
   <el-row class="content m-4">
+    {{ form }}
     <el-col class="flex justify-center mt-12 w-full sm:w-2/3 lg:w-1/3">
       <el-form
         :model="form"
         :rules="rules"
         label-width="120px"
         label-position="top"
+        @validate="validateForm"
         @submit.prevent
       >
         <el-form-item label="Password" prop="password">
@@ -98,7 +99,7 @@ const goToLogIn = () => {
         <el-form-item>
           <el-button
             type="primary"
-            :disabled="!form.password || !form.confirmPassword"
+            :disabled="!form.password || !form.confirmPassword || !formValid"
             class="w-full"
             round
             size="large"
@@ -107,9 +108,7 @@ const goToLogIn = () => {
           >
         </el-form-item>
         <el-form-item>
-          <el-button type="secondary" class="w-full" round size="large" @click="goToLogIn"
-            >To Log In</el-button
-          >
+          <el-button class="w-full" round size="large" @click="goToLogIn">To Log In</el-button>
         </el-form-item>
       </el-form></el-col
     >

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUserStore } from '~/stores/user'
+import { useUserStore } from '../../stores/user'
 import router from '../../router'
+import { showError } from '../../utils/handler'
+import { getLoading } from '../../utils/loading'
 
 const { params } = useRoute()
 const { confirmEmail } = useUserStore()
@@ -13,8 +15,15 @@ onMounted(() => {
 })
 
 const onConfirm = async () => {
-  await confirmEmail(id.value)
-  router.push({ name: 'LogIn' })
+  const loading = getLoading()
+  try {
+    await confirmEmail(id.value)
+    router.push({ name: 'LogIn' })
+  } catch (err) {
+    showError(err)
+  } finally {
+    loading.close()
+  }
 }
 </script>
 <template>
