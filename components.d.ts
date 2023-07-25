@@ -7,7 +7,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ApplicationDetails: typeof import('./src/components/ApplicationDetails.vue')['default']
+    ApplicationsTable: typeof import('./src/components/ApplicationsTable.vue')['default']
     ClientsTable: typeof import('./src/components/ClientsTable.vue')['default']
+    CommercialProposalTable: typeof import('./src/components/CommercialProposalTable.vue')['default']
     CompaniesTable: typeof import('./src/components/CompaniesTable.vue')['default']
     copy: typeof import('./src/components/CreateClientForm copy.vue')['default']
     CreateClient: typeof import('./src/components/CreateClient.vue')['default']
@@ -15,6 +18,7 @@ declare module '@vue/runtime-core' {
     CreateCompanyForm: typeof import('./src/components/CreateCompanyForm.vue')['default']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']

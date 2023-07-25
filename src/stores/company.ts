@@ -5,7 +5,7 @@ import { CompanyNew } from '~/interfaces/CompanyNew'
 import CompanyService from '~/services/CompanyService'
 
 export const useCompanyStore = defineStore('company', () => {
-  const companies = ref<Company[]>()
+  const companies = ref<Company[]>([])
 
   async function addCompany(user: CompanyNew) {
     await CompanyService.add(user)
@@ -18,6 +18,17 @@ export const useCompanyStore = defineStore('company', () => {
 
   async function setDescription(id: number, description: string) {
     await CompanyService.setDescription(id, description)
+  }
+
+  async function setAccreditation(id: number, accreditation: boolean) {
+    await CompanyService.setAccreditation(id, accreditation)
+
+    const company = companies.value?.find((company) => company.companyProfile.id === id)
+    if (!company) {
+      throw new Error(`Can't find company`)
+    }
+
+    company.companyProfile.accreditation = accreditation
   }
 
   async function invite(id: number) {
@@ -57,6 +68,7 @@ export const useCompanyStore = defineStore('company', () => {
     addCompany,
     getCompanies,
     setDescription,
+    setAccreditation,
     invite,
     block,
     unblock,

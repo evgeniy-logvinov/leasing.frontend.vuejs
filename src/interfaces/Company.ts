@@ -1,7 +1,6 @@
 import { CompanyStateEnum } from '~/enums/CompanyStateEnum'
 
 export interface Company {
-  client: any
   id: number
   description: string
   companyProfile: {
@@ -10,6 +9,8 @@ export interface Company {
     shortName: string
     state: CompanyStateEnum
     inn: number
+    agreement: string
+    accreditation: boolean
   }
   user: { email: string }
 }

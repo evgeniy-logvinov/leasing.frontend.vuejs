@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import { CompanyNew } from '../interfaces/CompanyNew'
-import { useCompanyStore } from '../stores/companies'
+import { useClientStore } from '../stores/client'
+import { ClientNew } from '../interfaces/ClientNew'
 import { getErrorMessage, showError } from '../utils/handler'
 
-const { getCompanies, addCompany, setDescription, invite, block, unblock } = useCompanyStore()
-const { companies } = storeToRefs(useCompanyStore())
+const { getClients, addClient, setDescription, invite, block, unblock } = useClientStore()
+const { clients } = storeToRefs(useClientStore())
 const loading = ref(true)
 
-onMounted(async () => {
+onMounted(() => {
   try {
-    await getCompanies()
+    getClients()
   } catch (err) {
     showError(getErrorMessage(err))
   } finally {
@@ -29,10 +29,10 @@ const onCancel = () => {
   add.value = false
 }
 
-const onCreate = async (form: CompanyNew) => {
-  await addCompany(form)
+const onCreate = async (form: ClientNew) => {
+  await addClient(form)
   add.value = false
-  await getCompanies()
+  await getClients()
 }
 
 const onDescription = ({ id, description }: { id: number; description: string }) => {
@@ -54,15 +54,15 @@ const onUnblock = ({ id }: { id: number }) => {
 <template>
   <el-skeleton v-if="!add" :rows="5" :loading="loading" animated>
     <template #default>
-      <CompaniesTable
-        :companies="companies"
+      <ClientsTable
+        :clients="clients"
         @addNew="onAddNew"
         @description="onDescription"
         @invite="onInvite"
         @block="onBlock"
         @unblock="onUnblock"
-      ></CompaniesTable>
+      ></ClientsTable>
     </template>
   </el-skeleton>
-  <CreateCompanyForm v-else @create="onCreate" @cancel="onCancel" />
+  <CreateClientForm v-else @create="onCreate" @cancel="onCancel" />
 </template>

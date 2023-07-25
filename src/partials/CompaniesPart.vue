@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import { useClientStore } from '../stores/clients'
-import { ClientNew } from '../interfaces/ClientNew'
+import { CompanyNew } from '../interfaces/CompanyNew'
+import { useCompanyStore } from '../stores/company'
 import { getErrorMessage, showError } from '../utils/handler'
 
-const { getClients, addClient, setDescription, invite, block, unblock } = useClientStore()
-const { clients } = storeToRefs(useClientStore())
+const { getCompanies, addCompany, setDescription, invite, block, unblock, setAccreditation } =
+  useCompanyStore()
+const { companies } = storeToRefs(useCompanyStore())
 const loading = ref(true)
 
 onMounted(async () => {
   try {
-    await getClients()
+    await getCompanies()
   } catch (err) {
     showError(getErrorMessage(err))
   } finally {
@@ -29,14 +30,18 @@ const onCancel = () => {
   add.value = false
 }
 
-const onCreate = async (form: ClientNew) => {
-  await addClient(form)
+const onCreate = async (form: CompanyNew) => {
+  await addCompany(form)
   add.value = false
-  await getClients()
+  await getCompanies()
 }
 
 const onDescription = ({ id, description }: { id: number; description: string }) => {
   setDescription(id, description)
+}
+
+const onAccreditation = ({ id, accreditation }: { id: number; accreditation: boolean }) => {
+  setAccreditation(id, accreditation)
 }
 
 const onInvite = ({ id }: { id: number }) => {
@@ -54,15 +59,16 @@ const onUnblock = ({ id }: { id: number }) => {
 <template>
   <el-skeleton v-if="!add" :rows="5" :loading="loading" animated>
     <template #default>
-      <ClientsTable
-        :clients="clients"
+      <CompaniesTable
+        :companies="companies"
         @addNew="onAddNew"
         @description="onDescription"
         @invite="onInvite"
         @block="onBlock"
         @unblock="onUnblock"
-      ></ClientsTable>
+        @accreditation="onAccreditation"
+      ></CompaniesTable>
     </template>
   </el-skeleton>
-  <CreateClientForm v-else @create="onCreate" @cancel="onCancel" />
+  <CreateCompanyForm v-else @create="onCreate" @cancel="onCancel" />
 </template>

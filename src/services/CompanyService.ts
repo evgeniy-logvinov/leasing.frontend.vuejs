@@ -24,5 +24,8 @@ export default {
   },
   unblock(id: number) {
     return apiClient.post(`${this.url}/unblock/${id}`)
+  },
+  setAccreditation(id: number, accreditation: boolean) {
+    return apiClient.post(`${this.url}/accreditation/${id}`, { accreditation })
   }
 }

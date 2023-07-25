@@ -4,7 +4,7 @@ import { Company } from '../interfaces/Company'
 const props = defineProps<{
   companies: Company[]
 }>()
-const emit = defineEmits(['addNew', 'invite', 'block', 'unblock', 'description'])
+const emit = defineEmits(['addNew', 'invite', 'block', 'unblock', 'description', 'accreditation'])
 
 const addNew = () => {
   emit('addNew')
@@ -25,6 +25,11 @@ const onUnblock = (id: string) => {
 const onSaveDescription = (id: string, description: string) => {
   emit('description', { id, description })
 }
+
+const onChangeAccreditation = (id: string, accreditation: boolean) => {
+  console.log('accreditation', accreditation)
+  emit('accreditation', { id, accreditation })
+}
 </script>
 
 <template>
@@ -37,19 +42,23 @@ const onSaveDescription = (id: string, description: string) => {
         <el-table-column prop="companyProfile.inn" label="Number" />
         <el-table-column prop="user.email" label="Email" />
         <el-table-column prop="companyProfile.state" label="State" />
+        <el-table-column prop="companyProfile.agreement" label="Agreement" />
+        <el-table-column label="Accreditation">
+          <template #default="{ row }">
+            <el-checkbox
+              v-model="row.companyProfile.accreditation"
+              @change="
+                onChangeAccreditation(row.companyProfile.id, row.companyProfile.accreditation)
+              "
+            ></el-checkbox> </template
+        ></el-table-column>
         <el-table-column label="Description">
           <template #default="{ row }">
-            <el-popover title="Fill description" :width="400">
-              <template #reference>
-                <span>
-                  <el-icon><EditPen /></el-icon>
-                  {{ row.description }}
-                </span>
-              </template>
-              <el-input v-model="row.description"></el-input>
-              <el-button @click="onSaveDescription(row.id, row.description)">Save</el-button>
-            </el-popover></template
-          >
+            <el-input
+              v-model="row.description"
+              @change="onSaveDescription(row.id, row.description)"
+            ></el-input>
+          </template>
         </el-table-column>
         <el-table-column label="Actions">
           <template
@@ -59,7 +68,6 @@ const onSaveDescription = (id: string, description: string) => {
               }
             }"
           >
-            {{ id }}
             <el-button v-if="state === 'UNREG'" size="small" class="mr-2" @click="onInvite(id)"
               >Invite</el-button
             >

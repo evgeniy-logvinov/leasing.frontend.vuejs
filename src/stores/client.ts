@@ -5,7 +5,7 @@ import { Client } from '~/interfaces/Client'
 import ClientService from '~/services/ClientService'
 
 export const useClientStore = defineStore('client', () => {
-  const clients = ref<Client[]>()
+  const clients = ref<Client[]>([])
 
   async function addClient(user: ClientNew) {
     await ClientService.add(user)
