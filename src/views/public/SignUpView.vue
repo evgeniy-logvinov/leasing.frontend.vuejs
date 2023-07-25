@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { useUserStore } from '../../stores/user'
+import { useAuthStore } from '../../stores/auth'
 import router from '../../router'
 import type { FormRules } from 'element-plus'
 import { emailRules, passwordRules } from '../../utils/rules'
@@ -42,7 +42,7 @@ const form: {
 const onSignUp = async () => {
   const loading = getLoading()
   try {
-    const { signUp } = useUserStore()
+    const { signUp } = useAuthStore()
     await signUp({ ...form })
     verify.value = true
   } catch (err) {

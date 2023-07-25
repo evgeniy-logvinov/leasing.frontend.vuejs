@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { reactive } from 'vue'
-import { useUserStore } from '../../stores/user'
+import { useAuthStore } from '../../stores/auth'
 import router from '../../router'
 import type { FormRules } from 'element-plus'
 import { passwordRules } from '../../utils/rules'
@@ -34,7 +34,7 @@ const form: {
 const onReset = async () => {
   const loading = getLoading()
   try {
-    const { resetPassword } = useUserStore()
+    const { resetPassword } = useAuthStore()
     await resetPassword({ ...form, id: id.value })
     goToLogIn()
   } catch (err) {
@@ -72,7 +72,6 @@ const goToLogIn = () => {
 </script>
 <template>
   <el-row class="content m-4">
-    {{ form }}
     <el-col class="flex justify-center mt-12 w-full sm:w-2/3 lg:w-1/3">
       <el-form
         :model="form"

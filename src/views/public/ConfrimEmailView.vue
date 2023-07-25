@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUserStore } from '../../stores/user'
+import { useAuthStore } from '../../stores/auth'
 import router from '../../router'
 import { showError } from '../../utils/handler'
 import { getLoading } from '../../utils/loading'
 
 const { params } = useRoute()
-const { confirmEmail } = useUserStore()
+const { confirmEmail } = useAuthStore()
 
 const id = ref<string>('')
 onMounted(() => {

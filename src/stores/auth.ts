@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import UsersService from '~/services/UsersService'
+import AuthService from '~/services/AuthService'
 import type { UserLogIn } from '~/interfaces/UserLogIn'
 import type { UserSignUp } from '~/interfaces/UserSignUp'
 import { UserInfo } from '~/interfaces/UserInfo'
 
-export const useUserStore = defineStore('user', () => {
+export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref('')
   const user = ref<UserInfo>({
     email: '',
@@ -15,21 +15,20 @@ export const useUserStore = defineStore('user', () => {
   })
 
   async function signUp(user: UserSignUp) {
-    // TODO: remove token when signup
-    await UsersService.sighUp(user)
+    await AuthService.sighUp(user)
   }
 
   async function confirmEmail(id: string) {
-    await UsersService.confirmEmail(id)
+    await AuthService.confirmEmail(id)
   }
 
   async function sendConfirmEmail(email: string | null) {
     const confirmEmail = email || user.value.email || ''
-    await UsersService.sendConfirmEmail(confirmEmail)
+    await AuthService.sendConfirmEmail(confirmEmail)
   }
 
   async function resetRequired(email: string) {
-    await UsersService.resetRequired(email)
+    await AuthService.resetRequired(email)
   }
 
   async function resetPassword(resetPasswordInfo: {
@@ -37,18 +36,18 @@ export const useUserStore = defineStore('user', () => {
     password: string
     confirmPassword: string
   }) {
-    await UsersService.resetPassword(resetPasswordInfo)
+    await AuthService.resetPassword(resetPasswordInfo)
   }
 
   async function logIn(userLogIn: UserLogIn) {
-    const { data } = await UsersService.logIn(userLogIn)
-    console.log('response', data)
-    if (data) {
-      accessToken.value = data.accessToken
-      user.value = data.user
-    } else {
+    const { data } = await AuthService.logIn(userLogIn)
+
+    if (!data) {
       throw new Error('Login failed')
     }
+
+    accessToken.value = data.accessToken
+    user.value = data.user
   }
 
   async function logOut() {

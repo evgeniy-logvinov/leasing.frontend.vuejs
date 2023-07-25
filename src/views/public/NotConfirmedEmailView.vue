@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { showError } from '../../utils/handler'
 import router from '../../router'
-import { useUserStore } from '../../stores/user'
+import { useAuthStore } from '../../stores/auth'
 import { getErrorMessage } from '../../utils/handler'
 import { getLoading } from '../../utils/loading'
 
@@ -10,7 +10,7 @@ const send = ref(false)
 const {
   user: { email },
   sendConfirmEmail
-} = useUserStore()
+} = useAuthStore()
 const sendEmail = async () => {
   const loading = getLoading()
   try {

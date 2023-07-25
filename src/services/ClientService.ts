@@ -1,14 +1,14 @@
 import { apiClient } from '~/http'
-import { Company } from '~/interfaces/Company'
-import { CompanyNew } from '~/interfaces/CompanyNew'
+import { Client } from '~/interfaces/Client'
+import { ClientNew } from '~/interfaces/ClientNew'
 
 export default {
-  url: 'leasing-company',
-  add(user: CompanyNew) {
-    return apiClient.post<CompanyNew>(this.url, user)
+  url: 'leasing-client',
+  add(user: ClientNew) {
+    return apiClient.post<ClientNew>(this.url, user)
   },
   getAll() {
-    return apiClient.get<Company[]>(this.url)
+    return apiClient.get<Client[]>(this.url)
   },
   setDescription(id: number, description: string) {
     return apiClient.post<{ id: string; description: string }>(`${this.url}/description`, {

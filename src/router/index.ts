@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useUserStore } from '~/stores/user'
+import { useAuthStore } from '~/stores/auth'
 
 const router = createRouter({
   // TODO: check
@@ -22,12 +22,45 @@ const router = createRouter({
           meta: {
             requiresAuth: true
           },
-          redirect: { name: 'Home' },
+          redirect: { name: 'Dashboard' },
           children: [
             {
-              path: 'home',
-              name: 'Home',
-              component: () => import('~/views/private/HomeView.vue'),
+              path: 'dashboard',
+              name: 'Dashboard',
+              component: () => import('~/views/private/DashboardView.vue'),
+              props: true
+            },
+            {
+              path: 'users',
+              name: 'Users',
+              component: () => import('~/views/private/UsersView.vue'),
+              props: true
+              // redirect: { name: 'UsersClients' }
+              // children: [
+              //   {
+              //     path: 'clients',
+              //     name: 'UsersClients',
+              //     component: () => import('~/views/private/UsersClientsView.vue'),
+              //     props: true
+              //   },
+              //   {
+              //     path: 'companies',
+              //     name: 'UsersCompanies',
+              //     component: () => import('~/views/private/UsersCompaniesView.vue'),
+              //     props: true
+              //   }
+              // ]
+            },
+            {
+              path: 'applications',
+              name: 'Applications',
+              component: () => import('~/views/private/ApplicationsView.vue'),
+              props: true
+            },
+            {
+              path: 'statistic',
+              name: 'Statistic',
+              component: () => import('~/views/private/StatisticView.vue'),
               props: true
             }
           ]
@@ -100,7 +133,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   console.log(to)
-  const { accessToken, user } = useUserStore()
+  const { accessToken, user } = useAuthStore()
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!accessToken) {

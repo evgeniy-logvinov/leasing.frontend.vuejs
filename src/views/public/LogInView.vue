@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { useUserStore } from '../../stores/user'
+import { computed, reactive, ref } from 'vue'
+import { useAuthStore } from '../../stores/auth'
 import router from '../../router'
 
 import { getLoading } from '../../utils/loading'
@@ -9,7 +9,7 @@ import { emailRules, passwordRules } from '../../utils/rules'
 import { getErrorMessage } from '../../utils/handler'
 const error = ref<string | null>(null)
 const showVerify = ref<boolean>(false)
-const { logIn } = useUserStore()
+const { logIn } = useAuthStore()
 
 const form: {
   email: string
@@ -24,7 +24,7 @@ const onLogIn = async () => {
   try {
     await logIn(form)
     router.push({
-      name: 'Home'
+      name: 'Dashboard'
     })
   } catch (err) {
     error.value = getErrorMessage(err)
@@ -47,6 +47,22 @@ const goToSignUp = () => {
 const forgotPassword = () => {
   router.push({ name: 'ForgotPassword' })
 }
+
+const formValidity = ref<{
+  email: boolean
+  password: boolean
+}>({
+  email: false,
+  password: false
+})
+
+const formValid = computed(() => {
+  return formValidity.value.email && formValidity.value.password
+})
+
+const validateForm = (propName: string, isValid: boolean) => {
+  ;(formValidity.value as any)[propName] = isValid
+}
 </script>
 
 <template>
@@ -58,6 +74,7 @@ const forgotPassword = () => {
         label-width="120px"
         label-position="top"
         @submit.prevent
+        @validate="validateForm"
       >
         <el-form-item prop="email" label="E-mail">
           <el-input v-model="form.email" size="large" />
@@ -71,7 +88,13 @@ const forgotPassword = () => {
         </el-form-item>
         <el-form-item>
           <div class="w-full text-center">
-            <el-button type="primary" class="w-full" size="large" round @click="onLogIn"
+            <el-button
+              type="primary"
+              class="w-full"
+              size="large"
+              :disabled="!form.email || !form.password || !formValid"
+              round
+              @click="onLogIn"
               >Log In</el-button
             >
           </div>

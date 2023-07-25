@@ -1,0 +1,68 @@
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { onMounted, ref } from 'vue'
+import { CompanyNew } from '../interfaces/CompanyNew'
+import { useCompanyStore } from '../stores/companies'
+import { getErrorMessage, showError } from '../utils/handler'
+
+const { getCompanies, addCompany, setDescription, invite, block, unblock } = useCompanyStore()
+const { companies } = storeToRefs(useCompanyStore())
+const loading = ref(true)
+
+onMounted(async () => {
+  try {
+    await getCompanies()
+  } catch (err) {
+    showError(getErrorMessage(err))
+  } finally {
+    loading.value = false
+  }
+})
+
+const add = ref(false)
+
+const onAddNew = () => {
+  add.value = true
+}
+
+const onCancel = () => {
+  add.value = false
+}
+
+const onCreate = async (form: CompanyNew) => {
+  await addCompany(form)
+  add.value = false
+  await getCompanies()
+}
+
+const onDescription = ({ id, description }: { id: number; description: string }) => {
+  setDescription(id, description)
+}
+
+const onInvite = ({ id }: { id: number }) => {
+  invite(id)
+}
+
+const onBlock = ({ id }: { id: number }) => {
+  block(id)
+}
+
+const onUnblock = ({ id }: { id: number }) => {
+  unblock(id)
+}
+</script>
+<template>
+  <el-skeleton v-if="!add" :rows="5" :loading="loading" animated>
+    <template #default>
+      <CompaniesTable
+        :companies="companies"
+        @addNew="onAddNew"
+        @description="onDescription"
+        @invite="onInvite"
+        @block="onBlock"
+        @unblock="onUnblock"
+      ></CompaniesTable>
+    </template>
+  </el-skeleton>
+  <CreateCompanyForm v-else @create="onCreate" @cancel="onCancel" />
+</template>
