@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { Application } from '~/interfaces/Application'
 import ApplicationService from '~/services/ApplicationService'
+import { ApplicationNew } from '~/interfaces/ApplicationNew'
 
 export const useApplicationStore = defineStore('application', () => {
   const applications = ref<Application[]>([])
@@ -11,5 +12,9 @@ export const useApplicationStore = defineStore('application', () => {
     applications.value = allApplications
   }
 
-  return { getApplications, applications }
+  async function addApplication(application: ApplicationNew) {
+    await ApplicationService.add(application)
+  }
+
+  return { getApplications, addApplication, applications }
 })

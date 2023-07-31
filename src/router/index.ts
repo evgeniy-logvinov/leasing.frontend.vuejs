@@ -35,21 +35,6 @@ const router = createRouter({
               name: 'Users',
               component: () => import('~/views/private/UsersView.vue'),
               props: true
-              // redirect: { name: 'UsersClients' }
-              // children: [
-              //   {
-              //     path: 'clients',
-              //     name: 'UsersClients',
-              //     component: () => import('~/views/private/UsersClientsView.vue'),
-              //     props: true
-              //   },
-              //   {
-              //     path: 'companies',
-              //     name: 'UsersCompanies',
-              //     component: () => import('~/views/private/UsersCompaniesView.vue'),
-              //     props: true
-              //   }
-              // ]
             },
             {
               path: 'applications',
@@ -58,11 +43,17 @@ const router = createRouter({
               props: true
             },
             {
-              path: 'statistic',
-              name: 'Statistic',
-              component: () => import('~/views/private/StatisticView.vue'),
+              path: 'client-profile',
+              name: 'ClientProfile',
+              component: () => import('~/views/private/ClientProfileView.vue'),
               props: true
             }
+            // {
+            //   path: 'statistic',
+            //   name: 'Statistic',
+            //   component: () => import('~/views/private/StatisticView.vue'),
+            //   props: true
+            // }
           ]
         },
         {

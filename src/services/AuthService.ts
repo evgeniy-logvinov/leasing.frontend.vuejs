@@ -5,25 +5,26 @@ import { UserInfo } from '~/interfaces/UserInfo'
 import { AxiosResponse } from 'axios'
 
 export default {
+  url: 'auth',
   sighUp(user: UserSignUp) {
-    return apiClient.post<UserSignUp>('auth/signup', user)
+    return apiClient.post<UserSignUp>(`${this.url}/signup`, user)
   },
   logIn(user: UserLogIn) {
     return apiClient.post<UserLogIn, AxiosResponse<{ accessToken: string; user: UserInfo }>>(
-      'auth/login',
+      `${this.url}/login`,
       user
     )
   },
   confirmEmail(id: string) {
-    return apiClient.post<string>('auth/confirm-email', { id })
+    return apiClient.post<string>(`${this.url}/confirm-email`, { id })
   },
   sendConfirmEmail(email: string) {
-    return apiClient.post<string>('auth/send-confirm-email', { email })
+    return apiClient.post<string>(`${this.url}/send-confirm-email`, { email })
   },
   resetRequired(email: string) {
-    return apiClient.post<string>('auth/reset-required', { email })
+    return apiClient.post<string>(`${this.url}/reset-required`, { email })
   },
   resetPassword(resetPasswordInfo: { id: string; password: string; confirmPassword: string }) {
-    return apiClient.post<string>('auth/reset-password', resetPasswordInfo)
+    return apiClient.post<string>(`${this.url}/reset-password`, resetPasswordInfo)
   }
 }

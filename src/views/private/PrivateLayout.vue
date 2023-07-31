@@ -60,18 +60,34 @@ const handleClose = (key: string, keyPath: string[]) => {
           <el-icon><service /></el-icon>
           <span>Dashboard</span>
         </el-menu-item>
-        <el-menu-item index="/private/users" :route="{ name: 'Users' }">
+        <el-menu-item
+          v-if="userRole === 'ROLE_ADMIN'"
+          index="/private/users"
+          :route="{ name: 'Users' }"
+        >
           <el-icon><User /></el-icon>
           <span>Users</span>
         </el-menu-item>
-        <el-menu-item index="/private/applications" :route="{ name: 'Applications' }">
+        <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_CLIENT'"
+          index="/private/applications"
+          :route="{ name: 'Applications' }"
+        >
           <el-icon><Checked /></el-icon>
           <span>Applications</span>
         </el-menu-item>
-        <el-menu-item index="/private/statistic" :route="{ name: 'Statistic' }">
+        <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_CLIENT'"
+          index="/private/client-profile"
+          :route="{ name: 'ClientProfile' }"
+        >
+          <el-icon><Checked /></el-icon>
+          <span>Client Profile</span>
+        </el-menu-item>
+        <!-- <el-menu-item index="/private/statistic" :route="{ name: 'Statistic' }">
           <el-icon><PieChart /></el-icon>
           <span>Statistic</span>
-        </el-menu-item>
+        </el-menu-item> -->
         <el-menu-item
           v-if="userRole === 'ROLE_ADMIN'"
           index="/private/admin"

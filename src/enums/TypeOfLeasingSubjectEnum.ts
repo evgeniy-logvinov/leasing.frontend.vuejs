@@ -1,3 +1,3 @@
 export enum TypeOfLeasingSubjectEnum {
-  CAR = 'CAR',
+  CAR = 'CAR'
 }

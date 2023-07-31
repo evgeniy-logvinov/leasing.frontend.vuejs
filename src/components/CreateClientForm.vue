@@ -9,9 +9,9 @@ interface UsersClientsNew {
   email: string
 }
 const form: UsersClientsNew = reactive({
-  name: 'wasdasd',
-  inn: 123456789101,
-  email: 'aa@mail.ru'
+  name: '',
+  inn: null,
+  email: ''
 })
 
 const rules = reactive<FormRules>({
