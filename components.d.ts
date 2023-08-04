@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ApplicationDetails: typeof import('./src/components/ApplicationDetails.vue')['default']
     ApplicationsTable: typeof import('./src/components/ApplicationsTable.vue')['default']
+    ClientProfileForm: typeof import('./src/components/ClientProfileForm.vue')['default']
     ClientsTable: typeof import('./src/components/ClientsTable.vue')['default']
     CommercialProposalTable: typeof import('./src/components/CommercialProposalTable.vue')['default']
     CompaniesTable: typeof import('./src/components/CompaniesTable.vue')['default']
@@ -16,6 +17,7 @@ declare module '@vue/runtime-core' {
     CreateApplicationForm: typeof import('./src/components/CreateApplicationForm.vue')['default']
     CreateClient: typeof import('./src/components/CreateClient.vue')['default']
     CreateClientForm: typeof import('./src/components/CreateClientForm.vue')['default']
+    CreateClientProfileForm: typeof import('./src/components/CreateClientProfileForm.vue')['default']
     CreateCompanyForm: typeof import('./src/components/CreateCompanyForm.vue')['default']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']

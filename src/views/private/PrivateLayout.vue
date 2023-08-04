@@ -81,7 +81,7 @@ const handleClose = (key: string, keyPath: string[]) => {
           index="/private/client-profile"
           :route="{ name: 'ClientProfile' }"
         >
-          <el-icon><Checked /></el-icon>
+          <el-icon><OfficeBuilding /></el-icon>
           <span>Client Profile</span>
         </el-menu-item>
         <!-- <el-menu-item index="/private/statistic" :route="{ name: 'Statistic' }">
