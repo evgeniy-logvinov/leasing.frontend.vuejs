@@ -2,10 +2,10 @@ import { ClientStateEnum } from '~/enums/ClientStateEnum'
 
 export interface Client {
   client: any
-  id: number
+  id: string
   description: string
   clientProfile: {
-    id: number
+    id: string
     fullName: string
     shortName: string
     state: ClientStateEnum

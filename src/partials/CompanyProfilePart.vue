@@ -2,11 +2,12 @@
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { getErrorMessage, showError } from '../utils/handler'
-import { useClientProfileStore } from '../stores/client-profile'
-import { ClientProfile } from '../interfaces/ClientProfile'
+import { useCompanyProfileStore } from '~/stores/company-profile'
+import { CompanyProfile } from '~/interfaces/CompanyProfile'
+import CompanyProfileForm from '~/components/CompanyProfileForm.vue'
 
-const { getProfile, saveProfile } = useClientProfileStore()
-const { client } = storeToRefs(useClientProfileStore())
+const { getProfile, saveProfile } = useCompanyProfileStore()
+const { company } = storeToRefs(useCompanyProfileStore())
 const loading = ref(true)
 
 onMounted(() => {
@@ -19,7 +20,7 @@ onMounted(() => {
   }
 })
 
-const onSave = async (profile: ClientProfile) => {
+const onSave = async (profile: CompanyProfile) => {
   loading.value = true
   try {
     await saveProfile(profile)
@@ -33,7 +34,7 @@ const onSave = async (profile: ClientProfile) => {
 <template>
   <el-skeleton :rows="5" :loading="loading" animated>
     <template #default>
-      <ClientProfileForm :client="client" @save="onSave" />
+      <CompanyProfileForm :company="company" @save="onSave" />
     </template>
   </el-skeleton>
 </template>

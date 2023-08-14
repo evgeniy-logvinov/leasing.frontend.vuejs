@@ -69,6 +69,30 @@ const handleClose = (key: string, keyPath: string[]) => {
           <span>Users</span>
         </el-menu-item>
         <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_COMPANY'"
+          index="/private/company-profile"
+          :route="{ name: 'CompanyProfile' }"
+        >
+          <el-icon><OfficeBuilding /></el-icon>
+          <span>Profile</span>
+        </el-menu-item>
+        <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_COMPANY'"
+          index="/private/preference-filter"
+          :route="{ name: 'PreferenceFilter' }"
+        >
+          <el-icon><Filter /></el-icon>
+          <span>Preference Filter</span>
+        </el-menu-item>
+        <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_COMPANY'"
+          index="/private/infrastructure"
+          :route="{ name: 'Infrastructure' }"
+        >
+          <el-icon><User /></el-icon>
+          <span>Infrastructure</span>
+        </el-menu-item>
+        <el-menu-item
           v-if="userRole === 'ROLE_LEASING_CLIENT'"
           index="/private/applications"
           :route="{ name: 'Applications' }"
@@ -82,7 +106,7 @@ const handleClose = (key: string, keyPath: string[]) => {
           :route="{ name: 'ClientProfile' }"
         >
           <el-icon><OfficeBuilding /></el-icon>
-          <span>Client Profile</span>
+          <span>Profile</span>
         </el-menu-item>
         <!-- <el-menu-item index="/private/statistic" :route="{ name: 'Statistic' }">
           <el-icon><PieChart /></el-icon>

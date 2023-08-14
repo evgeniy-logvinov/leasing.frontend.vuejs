@@ -4,6 +4,7 @@ import { useAuthStore } from '~/stores/auth'
 const router = createRouter({
   // TODO: check
   // TODO: add router hook before entry
+  // TODO: check roles before each router
   history: createWebHashHistory(import.meta.env.BASE_URL),
   scrollBehavior() {
     // always scroll to top
@@ -46,6 +47,24 @@ const router = createRouter({
               path: 'client-profile',
               name: 'ClientProfile',
               component: () => import('~/views/private/ClientProfileView.vue'),
+              props: true
+            },
+            {
+              path: 'company-profile',
+              name: 'CompanyProfile',
+              component: () => import('~/views/private/CompanyProfileView.vue'),
+              props: true
+            },
+            {
+              path: 'preference-filter',
+              name: 'PreferenceFilter',
+              component: () => import('~/views/private/PreferenceFilterView.vue'),
+              props: true
+            },
+            {
+              path: 'infrastructure',
+              name: 'Infrastructure',
+              component: () => import('~/views/private/InfrastructureView.vue'),
               props: true
             }
             // {

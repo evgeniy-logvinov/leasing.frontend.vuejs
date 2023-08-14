@@ -3,7 +3,7 @@ import { TypeOfSupplierEnum } from '~/enums/TypeOfSupplierEnum'
 import { CompanyProposalResult } from './CompanyProposalResult'
 
 export interface Application {
-  id: number
+  id: string
   isNew: boolean
   commercialProposal: CompanyProposalResult[]
   brand: string

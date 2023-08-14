@@ -10,19 +10,19 @@ export default {
   getAll() {
     return apiClient.get<Client[]>(this.url)
   },
-  setDescription(id: number, description: string) {
+  setDescription(id: string, description: string) {
     return apiClient.post<{ id: string; description: string }>(`${this.url}/description`, {
       id,
       description
     })
   },
-  invite(id: number) {
+  invite(id: string) {
     return apiClient.post(`${this.url}/invite/${id}`)
   },
-  block(id: number) {
+  block(id: string) {
     return apiClient.post(`${this.url}/block/${id}`)
   },
-  unblock(id: number) {
+  unblock(id: string) {
     return apiClient.post(`${this.url}/unblock/${id}`)
   }
 }

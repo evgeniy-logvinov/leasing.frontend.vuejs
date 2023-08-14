@@ -16,11 +16,11 @@ export const useClientStore = defineStore('client', () => {
     clients.value = allClients
   }
 
-  async function setDescription(id: number, description: string) {
+  async function setDescription(id: string, description: string) {
     await ClientService.setDescription(id, description)
   }
 
-  async function invite(id: number) {
+  async function invite(id: string) {
     const { data: updatedClientProfile } = await ClientService.invite(id)
 
     const client = clients.value?.find((client) => client.clientProfile.id === id)
@@ -30,7 +30,7 @@ export const useClientStore = defineStore('client', () => {
     client.clientProfile = { ...updatedClientProfile }
   }
 
-  async function block(id: number) {
+  async function block(id: string) {
     const { data: updatedClientProfile } = await ClientService.block(id)
 
     const client = clients.value?.find((client) => client.clientProfile.id === id)
@@ -41,7 +41,7 @@ export const useClientStore = defineStore('client', () => {
     client.clientProfile = { ...updatedClientProfile }
   }
 
-  async function unblock(id: number) {
+  async function unblock(id: string) {
     const { data: updatedClientProfile } = await ClientService.unblock(id)
 
     const client = clients.value?.find((client) => client.clientProfile.id === id)

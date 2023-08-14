@@ -6,14 +6,14 @@ import ClientProfileService from '~/services/ClientProfileService'
 export const useClientProfileStore = defineStore('client-profile', () => {
   const client = ref<ClientProfile>()
 
-  async function getClientProfile() {
-    const { data: clientProfile } = await ClientProfileService.getAllByUser()
+  async function getProfile() {
+    const { data: clientProfile } = await ClientProfileService.getByUser()
     client.value = clientProfile
   }
 
-  function saveClientProfile(profile: ClientProfile) {
+  function saveProfile(profile: ClientProfile) {
     ClientProfileService.save(profile)
   }
 
-  return { getClientProfile, saveClientProfile, client }
+  return { getProfile, saveProfile, client }
 })

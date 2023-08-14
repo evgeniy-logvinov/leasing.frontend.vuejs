@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     ClientsTable: typeof import('./src/components/ClientsTable.vue')['default']
     CommercialProposalTable: typeof import('./src/components/CommercialProposalTable.vue')['default']
     CompaniesTable: typeof import('./src/components/CompaniesTable.vue')['default']
+    CompanyProfileForm: typeof import('./src/components/CompanyProfileForm.vue')['default']
     copy: typeof import('./src/components/CreateClientForm copy.vue')['default']
     CreateApplicationForm: typeof import('./src/components/CreateApplicationForm.vue')['default']
     CreateClient: typeof import('./src/components/CreateClient.vue')['default']

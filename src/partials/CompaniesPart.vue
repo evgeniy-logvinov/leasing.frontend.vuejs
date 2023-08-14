@@ -36,23 +36,23 @@ const onCreate = async (form: CompanyNew) => {
   await getCompanies()
 }
 
-const onDescription = ({ id, description }: { id: number; description: string }) => {
+const onDescription = ({ id, description }: { id: string; description: string }) => {
   setDescription(id, description)
 }
 
-const onAccreditation = ({ id, accreditation }: { id: number; accreditation: boolean }) => {
+const onAccreditation = ({ id, accreditation }: { id: string; accreditation: boolean }) => {
   setAccreditation(id, accreditation)
 }
 
-const onInvite = ({ id }: { id: number }) => {
+const onInvite = ({ id }: { id: string }) => {
   invite(id)
 }
 
-const onBlock = ({ id }: { id: number }) => {
+const onBlock = ({ id }: { id: string }) => {
   block(id)
 }
 
-const onUnblock = ({ id }: { id: number }) => {
+const onUnblock = ({ id }: { id: string }) => {
   unblock(id)
 }
 </script>

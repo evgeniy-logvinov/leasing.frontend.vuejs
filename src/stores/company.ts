@@ -16,11 +16,11 @@ export const useCompanyStore = defineStore('company', () => {
     companies.value = allCompanies
   }
 
-  async function setDescription(id: number, description: string) {
+  async function setDescription(id: string, description: string) {
     await CompanyService.setDescription(id, description)
   }
 
-  async function setAccreditation(id: number, accreditation: boolean) {
+  async function setAccreditation(id: string, accreditation: boolean) {
     await CompanyService.setAccreditation(id, accreditation)
 
     const company = companies.value?.find((company) => company.companyProfile.id === id)
@@ -31,7 +31,7 @@ export const useCompanyStore = defineStore('company', () => {
     company.companyProfile.accreditation = accreditation
   }
 
-  async function invite(id: number) {
+  async function invite(id: string) {
     const { data: updatedCompanyProfile } = await CompanyService.invite(id)
 
     const company = companies.value?.find((company) => company.companyProfile.id === id)
@@ -42,7 +42,7 @@ export const useCompanyStore = defineStore('company', () => {
     company.companyProfile = { ...updatedCompanyProfile }
   }
 
-  async function block(id: number) {
+  async function block(id: string) {
     const { data: updatedCompanyProfile } = await CompanyService.block(id)
 
     const company = companies.value?.find((company) => company.companyProfile.id === id)
@@ -53,7 +53,7 @@ export const useCompanyStore = defineStore('company', () => {
     company.companyProfile = { ...updatedCompanyProfile }
   }
 
-  async function unblock(id: number) {
+  async function unblock(id: string) {
     const { data: updatedCompanyProfile } = await CompanyService.unblock(id)
 
     const company = companies.value?.find((company) => company.companyProfile.id === id)

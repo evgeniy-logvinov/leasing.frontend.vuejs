@@ -7,7 +7,7 @@ export default {
   getAll() {
     return apiClient.get<ClientProfile[]>(this.url)
   },
-  getAllByUser() {
+  getByUser() {
     return apiClient.get<ClientProfile>(this.url)
   },
   save(profile: ClientProfile) {

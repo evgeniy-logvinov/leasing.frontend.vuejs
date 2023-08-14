@@ -35,19 +35,19 @@ const onCreate = async (form: ClientNew) => {
   await getClients()
 }
 
-const onDescription = ({ id, description }: { id: number; description: string }) => {
+const onDescription = ({ id, description }: { id: string; description: string }) => {
   setDescription(id, description)
 }
 
-const onInvite = ({ id }: { id: number }) => {
+const onInvite = ({ id }: { id: string }) => {
   invite(id)
 }
 
-const onBlock = ({ id }: { id: number }) => {
+const onBlock = ({ id }: { id: string }) => {
   block(id)
 }
 
-const onUnblock = ({ id }: { id: number }) => {
+const onUnblock = ({ id }: { id: string }) => {
   unblock(id)
 }
 </script>

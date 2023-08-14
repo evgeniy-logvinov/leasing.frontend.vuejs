@@ -1,10 +1,10 @@
 import { CompanyStateEnum } from '~/enums/CompanyStateEnum'
 
 export interface Company {
-  id: number
+  id: string
   description: string
   companyProfile: {
-    id: number
+    id: string
     fullName: string
     shortName: string
     state: CompanyStateEnum

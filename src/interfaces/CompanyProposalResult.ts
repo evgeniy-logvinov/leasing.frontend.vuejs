@@ -1,11 +1,11 @@
 import { Company } from './Company'
 
 export interface CompanyProposalResult {
-  id: number
+  id: string
   leasingCompany: Company
   result: 'APPROVED' | 'NOT_APPROVED'
   topFive: 'YES' | 'NO' | 'UNKNOWN'
-  analitic: { id: number; firstName: string }
+  analitic: { id: string; firstName: string }
   created: string
-  manager: { id: number; firstName: string }
+  manager: { id: string; firstName: string }
 }
