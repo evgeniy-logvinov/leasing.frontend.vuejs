@@ -21,6 +21,15 @@ onMounted(async () => {
 <template>
   <el-skeleton :rows="5" :loading="loading" animated>
     <template #default>
+      <div>Please choose city and coverage territory</div>
+      <div
+        :key="cityOfPresenceCustomerCoverageArea.id"
+        v-for="cityOfPresenceCustomerCoverageArea in preferenceFilter?.cityOfPresenceCustomerCoverageArea"
+      >
+        <el-select v-model="cityOfPresenceCustomerCoverageArea.city">
+          <el-option label="Chelyabinks" value="6630f55a-d66b-4b75-bbb0-b74823440ebb"></el-option>
+        </el-select>
+      </div>
       {{ preferenceFilter }}
     </template>
   </el-skeleton>
