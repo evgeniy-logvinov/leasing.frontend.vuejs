@@ -101,6 +101,22 @@ const handleClose = (key: string, keyPath: string[]) => {
           <span>Applications</span>
         </el-menu-item>
         <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_COMPANY'"
+          index="/private/company-applications"
+          :route="{ name: 'CompanyApplications' }"
+        >
+          <el-icon><Checked /></el-icon>
+          <span>Applications</span>
+        </el-menu-item>
+        <el-menu-item
+          v-if="userRole === 'ROLE_LEASING_COMPANY'"
+          index="/private/company-rejected"
+          :route="{ name: 'CompanyRejected' }"
+        >
+          <el-icon><Close /></el-icon>
+          <span>Rejected</span>
+        </el-menu-item>
+        <el-menu-item
           v-if="userRole === 'ROLE_LEASING_CLIENT'"
           index="/private/client-profile"
           :route="{ name: 'ClientProfile' }"

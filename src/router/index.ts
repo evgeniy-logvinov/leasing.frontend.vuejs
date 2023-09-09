@@ -44,6 +44,18 @@ const router = createRouter({
               props: true
             },
             {
+              path: 'company-applications',
+              name: 'CompanyApplications',
+              component: () => import('~/views/private/CompanyApplicationsView.vue'),
+              props: true
+            },
+            {
+              path: 'company-rejected',
+              name: 'CompanyRejected',
+              component: () => import('~/views/private/CompanyRejectedView.vue'),
+              props: true
+            },
+            {
               path: 'client-profile',
               name: 'ClientProfile',
               component: () => import('~/views/private/ClientProfileView.vue'),
